@@ -1,0 +1,31 @@
+﻿@page
+@model WebRazor.Pages.Account.EditModel
+@{
+}
+<div id="form">
+    <div id="form-title">
+        <span>Edit personal profile</span>
+    </div>
+    <div id="form-content">
+        <form action="" method="post">
+            <span class="msg-error">@ViewData["msg"]</span><br />
+
+            <label>Company name<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Customer.CompanyName" /><br />
+
+            <label>Contact name<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Customer.ContactName" /><br />
+            
+            <label>Contact title<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Customer.ContactTitle" /><br />
+
+            <label>Address<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Customer.Address" /><br />
+
+            <label>Email<span style="color: red;">*</span></label><br />
+            <input type="text" asp-for="Account.Email" /><br />
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
