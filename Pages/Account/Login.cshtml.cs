@@ -43,5 +43,10 @@ namespace WebRazor.Pages.Account
 
             return RedirectToPage("/index");
         }
+        public IActionResult OnGetLogOut()
+        {
+            HttpContext.Session.Remove("Account");
+            return RedirectToPage("/index");
+        }
     }
 }

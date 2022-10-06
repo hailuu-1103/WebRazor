@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 using WebRazor.Models;
 
@@ -36,7 +37,6 @@ namespace WebRazor.Pages.Order
             {
                 return Redirect("/Account/Login");
             }
-
             Models.Product product = (await dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id));
 
             if (product == null || product.UnitsInStock == 0)
@@ -50,12 +50,10 @@ namespace WebRazor.Pages.Order
                     Models.Order order = new Models.Order();
                     order.CustomerId = Auth.CustomerId;
                     order.OrderDate = DateTime.Now;
-
+                    order.ShippedDate = DateTimeUtil.Add(DateTime.Now, TimeSpan.FromDays(7));
                     await dbContext.Orders.AddAsync(order);
                     await dbContext.SaveChangesAsync();
                     order = await dbContext.Orders.OrderBy(o => o.OrderDate).LastOrDefaultAsync();
-
-
                     OrderDetail od = new OrderDetail();
                     od.OrderId = order.OrderId;
                     od.ProductId = (int)id;

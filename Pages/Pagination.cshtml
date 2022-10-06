@@ -1,0 +1,15 @@
+﻿@page
+@model WebRazor.Pages.PaginationModel
+@{
+}
+<div id="content-left">
+    <h3>CATEGORY</h3>
+    <ul>
+        @foreach (var item in Model.Categories)
+        {
+            <a asp-route-id="@item.CategoryId">
+            <li>@item.CategoryName</li>
+            </a>
+        }
+    </ul>
+</div>

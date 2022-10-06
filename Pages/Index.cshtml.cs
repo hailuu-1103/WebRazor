@@ -78,10 +78,9 @@ namespace WebRazor.Pages
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value).Take(4);
                 foreach(var productID in top4ProductIDToCount)
                 {
-                    var item = (Models.Product) dbContext.Products.FirstOrDefault(product => product.ProductId == productID.Key);
+                    var item = dbContext.Products.FirstOrDefault(product => product.ProductId == productID.Key);
                     BestSellerProducts.Add(item);
                 }
-
             }
         }
 

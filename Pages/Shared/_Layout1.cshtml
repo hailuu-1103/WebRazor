@@ -21,7 +21,7 @@
                     @if(Context.Session.GetString("Account") != null){
                         <li><a href="~/cart">Cart: 0</a></li>
                         <li><a href="~/account/profile">Profile</a></li>
-                        <li><a href="#">SignOut</a></li>
+                        <li><a asp-page="/Account/Login" asp-page-handler="LogOut">SignOut</a></li>
                     } else {
                         <li><a href="~/Account/Login">SignIn</a></li>
                         <li><a href="~/Account/SignUp">SignUp</a></li>
