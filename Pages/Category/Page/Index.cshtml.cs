@@ -2,43 +2,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebRazor.Models;
 
-namespace WebRazor.Pages
+namespace WebRazor.Pages.Category.Page
 {
-    public class PaginationModel : PageModel
+    public class IndexModel : PageModel
     {
-
         private readonly PRN221DBContext dbContext;
-        public PaginationModel(PRN221DBContext dbContext)
+        public IndexModel(PRN221DBContext dbContext)
         {
             this.dbContext = dbContext;
         }
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
-        public int Count { get; set; }
+        public int Count;
         public int PageSize { get; set; } = 12;
         public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
         [BindProperty]
-        public List<Category> Categories { get; set; }
+        public List<Models.Category> Categories { get; set; }
         [BindProperty]
         public List<Models.Product> Products { get; set; }
-        [FromQuery(Name = "id")]
-        public string CatId { get; set; }
-        public void OnGet()
+        private int? catID;
+        public void OnGet(int? id)
         {
+            catID = id;
+            Products = dbContext.Products.Where(product => product.CategoryId == catID).ToList();
+            Count = Products.Count;
             Categories = dbContext.Categories.ToList();
-            if (CatId != null)
+            if (id != 0)
             {
                 Products = GetPaginatedResult(CurrentPage, PageSize);
-                Count = GetCount();
             }
         }
         public List<Models.Product> GetPaginatedResult(int currentPage, int pageSize)
         {
-            return dbContext.Products.Where(product => product.CategoryId == int.Parse(CatId)).OrderBy(d => d.ProductId).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
-        }
-        public int GetCount()
-        {
-            return dbContext.Products.Count();
+            return dbContext.Products.Where(product => product.CategoryId == catID).OrderBy(d => d.ProductId).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
         }
     }
 }

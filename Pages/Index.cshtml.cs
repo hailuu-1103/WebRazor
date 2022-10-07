@@ -18,7 +18,7 @@ namespace WebRazor.Pages
         }
 
         [BindProperty]
-        public List<Category> Categories { get; set; }
+        public List<Models.Category> Categories { get; set; }
 
         [BindProperty]
         public List<Models.Product> Products { get; set; } = new List<Models.Product>();

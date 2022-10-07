@@ -1,14 +1,13 @@
 ﻿@page
 @model WebRazor.Pages.IndexModel
 @{
-
 }
 <div id="content-left">
     <h3>CATEGORY</h3>
     <ul>
         @foreach (var item in Model.Categories)
         {
-            <a asp-route-id="@item.CategoryId">
+            <a href="~/category/@item.CategoryId">
             <li>@item.CategoryName</li>
             </a>
         }
