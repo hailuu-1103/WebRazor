@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model WebRazor.Pages.Category.Page.IndexModel
 @{
 }
@@ -7,9 +7,47 @@
     <ul>
         @foreach (var item in Model.Categories)
         {
-            <a asp-route-id="@item.CategoryId">
+            <a href="~/category/@item.CategoryId">
             <li>@item.CategoryName</li>
             </a>
         }
     </ul>
+</div>
+<div id="content-right">
+
+    @if (Model.Products.Count > 0)
+    {
+        <div class="path">Product</div>
+
+        <div class="content-main">
+            @foreach (var item in Model.Products)
+            {
+                <div class="product">
+                    <a asp-page="/Product/Detail" asp-route-id="@item.ProductId"><img src="~/img/1.jpg" /></a>
+                    <div class="name"><a asp-page="/Product/Detail" asp-route-id="@item.ProductId">@item.ProductName</a></div>
+                    <div class="price">@item.UnitPrice</div>
+                    <div><a href="">Buy now</a></div>
+                </div>
+            }
+        </div>
+        <div class="paging">
+            <ul class="pagination">
+                @if (Model.IsShowPrevious)
+                {
+                    <li><a href="~/category/page/@(@Model.CurrentPage-1)">Previous</a></li>
+                }
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li>
+                        <a href="~/category/page/@i">@i</a>
+                    </li>
+                }
+                @if (Model.IsShowNext)
+                {
+                    <li><a href="~/category/page/@(@Model.CurrentPage+1)">Next</a></li>
+                }
+            </ul>
+        </div>
+        
+    }
 </div>

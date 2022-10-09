@@ -94,6 +94,7 @@
 .content-main {
     width: 100%;
     display: flex;
+    flex-wrap:wrap;
     margin-bottom: 15px;
 }
 
@@ -532,6 +533,9 @@
     text-align: right;
     padding-right: 10px;
 }
-.pagination{
-    padding-left:650px;
+.paging {
+    display:flex;
+    justify-content:center;
+    list-style: none;
 }
+

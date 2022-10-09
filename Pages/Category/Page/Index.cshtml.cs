@@ -21,9 +21,12 @@ namespace WebRazor.Pages.Category.Page
         [BindProperty]
         public List<Models.Product> Products { get; set; }
         private int? catID;
+        public bool IsShowPrevious => this.CurrentPage > 1;
+        public bool IsShowNext => this.CurrentPage < this.TotalPages;
         public void OnGet(int? id)
         {
-            catID = id;
+            CurrentPage = (int)id;
+            catID = int.Parse(HttpContext.Session.GetString("CategoryID"));
             Products = dbContext.Products.Where(product => product.CategoryId == catID).ToList();
             Count = Products.Count;
             Categories = dbContext.Categories.ToList();

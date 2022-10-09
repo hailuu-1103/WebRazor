@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json;
 using WebRazor.Models;
 
 namespace WebRazor.Pages.Category
@@ -21,6 +22,8 @@ namespace WebRazor.Pages.Category
         [BindProperty]
         public List<Models.Product> Products { get; set; }
         private int? catID;
+        public bool IsShowPrevious => this.CurrentPage > 1;
+        public bool IsShowNext => this.CurrentPage < this.TotalPages;
         public void OnGet(int? id)
         {
             catID = id;
@@ -30,6 +33,7 @@ namespace WebRazor.Pages.Category
             if (id != 0)
             {
                 Products = GetPaginatedResult(CurrentPage, PageSize);
+                HttpContext.Session.SetString("CategoryID", JsonSerializer.Serialize(catID));
             }
         }
         public List<Models.Product> GetPaginatedResult(int currentPage, int pageSize)

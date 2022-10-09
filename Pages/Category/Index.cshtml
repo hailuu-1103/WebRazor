@@ -7,7 +7,7 @@
     <ul>
         @foreach (var item in Model.Categories)
         {
-            <a asp-page="./category/index" asp-route-id="@item.CategoryId">
+            <a href="~/category/@item.CategoryId">
             <li>@item.CategoryName</li>
             </a>
         }
@@ -23,21 +23,31 @@
             @foreach (var item in Model.Products)
             {
                 <div class="product">
-                    <a asp-page="./Product/Detail" asp-route-id="@item.ProductId"><img src="img/1.jpg" /></a>
-                    <div class="name"><a asp-page="./Product/Detail" asp-route-id="@item.ProductId">@item.ProductName</a></div>
+                    <a asp-page="/Product/Detail" asp-route-id="@item.ProductId"><img src="~/img/1.jpg"/></a>
+                    <div class="name"><a asp-page="/Product/Detail" asp-route-id="@item.ProductId">@item.ProductName</a></div>
                     <div class="price">@item.UnitPrice</div>
                     <div><a href="">Buy now</a></div>
                 </div>
             }
         </div>
-        <ul class="pagination">
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a href="~/category/page/@i">@i</a>
-                    <a ></a>
-                </li>
-            }
-        </ul>
+        <div class="paging">
+            <ul class="pagination">
+                @if (Model.IsShowPrevious)
+                {
+                    <li><a href="~/category/page/@(@Model.CurrentPage-1)">Previous</a></li>
+                }
+                @for (var i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li>
+                        <a href="~/category/page/@i">@i</a>
+                    </li>
+                }
+                @if (Model.IsShowNext)
+                {
+                    <li><a href="~/category/page/@(@Model.CurrentPage+1)">Next</a></li>
+                }
+            </ul>
+        </div>
+       
     }
 </div>
