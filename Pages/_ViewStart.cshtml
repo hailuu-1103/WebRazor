@@ -1,3 +1,8 @@
 ﻿@{
-    Layout = "_Layout1";
+    if (Context.Session.GetString("Admin") != null){
+        Layout = "_Layout2";
+    } else {
+        Layout = "_Layout1";
+
+    }
 }

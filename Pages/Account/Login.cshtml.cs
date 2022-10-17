@@ -38,10 +38,16 @@ namespace WebRazor.Pages.Account
                 return Page();
             }
 
+            if(acc.Role == 1) // Admin
+            {
+                HttpContext.Session.SetString("Admin", JsonSerializer.Serialize(acc));
+                return RedirectToPage("/Admin/Dashboard/Index");
+            } else { // Customer
+                HttpContext.Session.SetString("Account", JsonSerializer.Serialize(acc));
+                return RedirectToPage("/index");
+            }
 
-            HttpContext.Session.SetString("Account", JsonSerializer.Serialize(acc));
 
-            return RedirectToPage("/index");
         }
         public IActionResult OnGetLogOut()
         {

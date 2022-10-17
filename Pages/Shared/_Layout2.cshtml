@@ -3,9 +3,31 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>@ViewBag.Title</title>
+    <link href="~/css/style.css" rel="stylesheet" />
 </head>
 <body>
+    <div id="container">
+        <div id="header">
+            <div id="logo-admin">
+                Ecommerce Admin
+            </div>
+        </div>
+        <div id="banner">
+            <ul>
+                @if (Context.Session.GetString("Admin") != null)
+                {
+                    <li><a asp-page="/Account/Login" asp-page-handler="LogOut">SignOut</a></li>
+                }
+                else
+                {
+                    <li><a href="~/Account/Login">SignIn</a></li>
+                    <li><a href="~/Account/SignUp">SignUp</a></li>
+                }
+            </ul>
+        </div>
+    </div>
     <div>
         @RenderBody()
     </div>
