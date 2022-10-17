@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link href="~/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SignalR.styles.css" asp-append-version="true" />
 </head>
 <body>
     <div id="container">
@@ -35,8 +36,11 @@
         <div id="content">
             @RenderBody()
         </div>
-
+        <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/site.js"></script>
         <div id="footer">footer</div>
+
+        @await RenderSectionAsync("Scripts", required: false)
     </div>
 </body>
 </html>

@@ -13,10 +13,11 @@ namespace WebRazor.Pages.Product
             this.dbContext = prn221DBContext;
         }
 
-        public List<Models.Product> Products { get; set; } = new();
-        public async void OnGet()
+        public List<Models.Product> Products { get; set; }
+        public async Task<IActionResult> OnGet()
         {
-            Products = await dbContext.Products.ToListAsync();
+            Products = dbContext.Products.Include(p => p.Category).ToList();
+            return Page();
         }
     }
 }

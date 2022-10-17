@@ -40,7 +40,7 @@
                         </form>
                     </div>
                     <div id="product-title-3" style="width: 20%;">
-                        <a href="create-product.html">Create a new Product</a>
+                        <a href="~/Admin/Product/Create">Create a new Product</a>
                         <form action="">
                             <label for="upload-file">Import .xls or .xlsx file</label>
                             <input type="file" name="file" id="upload-file" />
@@ -49,28 +49,33 @@
                 </div>
                 <div id="order-table-admin">
                     <table id="orders">
-                        <tr>
-                            <th>ProductID</th>
-                            <th>ProductName</th>
-                            <th>UnitPrice</th>
-                            <th>Unit</th>
-                            <th>UnitsInStock</th>
-                            <th>Category</th>
-                            <th>Discontinued</th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            @foreach(var item in Model.Products){
-                                <td>@item.ProductId</td>
-                                <td>@item.ProductName</td>
-                                <td>@item.UnitPrice</td>
-                                <td>@item.QuantityPerUnit</td>
-                                <td>@item.UnitsInStock</td>
-                                <td>@item.Category.CategoryName</td>
-                                <td>@item.Discontinued</td>
+                        <thead>
+                            <tr>
+                                <th>ProductID</th>
+                                <th>ProductName</th>
+                                <th>UnitPrice</th>
+                                <th>Unit</th>
+                                <th>UnitsInStock</th>
+                                <th>Category</th>
+                                <th>Discontinued</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            @foreach (var item in Model.Products)
+                            {
+                                <tr>
+                                    <td>@item.ProductId</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.UnitPrice</td>
+                                    <td>@item.QuantityPerUnit</td>
+                                    <td>@item.UnitsInStock</td>
+                                    <td>@item.Category?.CategoryName</td>
+                                    <td>@item.Discontinued</td>
+                                </tr>
                             }
-                        </tr>
-                        
+                        </tbody>
+                         
                     </table>
                 </div>
                 <div id="paging">
@@ -89,3 +94,30 @@
         </div>
     </div>
 </div>
+<script>
+    "use strict";
+    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs").build();
+    connection.on("ReloadProduct", (data) => {
+        var tr = '';
+        $.each(data, (k, v) => {
+            tr +=
+                `
+                <tr>
+                    <td>${v.ProductId}</td>
+                    <td>${v.ProductName}</td>
+                    <td>${v.UnitPrice}</td>
+                    <td>${v.QuantityPerUnit}</td>
+                    <td>${v.UnitsInStock}</td>
+                    <td>12</td>
+                    <td>${v.Discontinued}</td>
+                </tr>
+                `
+        })
+        $("#tableBody").html(tr);
+    });
+
+    connection.start().then().catch(function (err) {
+        return console.log(err.toString());
+    });
+
+</script>

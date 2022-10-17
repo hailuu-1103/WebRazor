@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>@ViewBag.Title</title>
     <link href="~/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/SignalR.styles.css" asp-append-version="true" />
 </head>
 <body>
     <div id="container">
@@ -31,5 +32,9 @@
     <div>
         @RenderBody()
     </div>
+    <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
