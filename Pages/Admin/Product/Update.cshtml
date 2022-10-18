@@ -1,5 +1,56 @@
-﻿@page
+﻿@page "{id:int?}"
 @model WebRazor.Pages.Product.UpdateModel
 @{
 }
-<h3>Update</h3>
+<div id="content">
+    <div id="content-left">
+        <ul>
+            <a href="dashboard.html">
+            <li>Dashboard</li></a>
+            <a href="order.html">
+            <li>Orders</li></a>
+            <a href="product.html">
+            <li>Products</li></a>
+            <a href="#">
+            <li>Customers</li></a>
+        </ul>
+    </div>
+    <div id="content-right">
+        <div class="path-admin">UPDATE A NEW PRODUCT</b></div>
+        <div class="content-main">
+            <form id="content-main-product" method="post">
+                <div class="content-main-1">
+                    <label asp-for="Product.ProductName">Product name (*):</label><br />
+                    <input asp-for="Product.ProductName"><br />
+                    <span asp-validation-for="Product.ProductName" class="msg-error"></span><br />
+                    <label asp-for="Product.UnitPrice">Unit price:</label><br />
+                    <input asp-for="Product.UnitPrice"><br />
+                    <label asp-for="Product.QuantityPerUnit">Quantity per unit:</label><br />
+                    <input asp-for="Product.QuantityPerUnit"><br />
+                    <label asp-for="Product.UnitsInStock">Units in stock (*):</label><br />
+                    <input asp-for="Product.UnitsInStock"><br />
+                    <span asp-validation-for="Product.UnitsInStock" class="msg-error">Units in stock is required.</span><br />
+                </div>
+                <div class="content-main-1">
+                    <label>Category (*):</label><br />
+                    <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    <br />
+                    <span class="msg-error">Product name is required.</span><br />
+                    <label>Reorder level:</label><br />
+                    <input type="text" name="txtReorderLevel" id="" disabled><br />
+                    <label>Units on order:</label><br />
+                    <input type="text" name="txtUnitsOnOrder" id="" disabled><br />
+                    <label asp-for="Product.Discontinued">Discontinued:</label><br />
+                    <input asp-for="Product.Discontinued" type="checkbox"><br />
+                    <input type="submit" value="Save" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+  }

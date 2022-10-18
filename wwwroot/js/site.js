@@ -11,7 +11,7 @@ connection.on("ReloadProduct", (data) => {
                 <td>${v.UnitPrice}</td>
                 <td>${v.QuantityPerUnit}</td>
                 <td>${v.UnitsInStock}</td>
-                <td>12</td>
+                <td>${v.Category?.CategoryName}</td>
                 <td>${v.Discontinued}</td>
             </tr>
             `

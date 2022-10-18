@@ -17,6 +17,8 @@
     </div>
     <div id="content-right">
         <div class="path-admin">PRODUCTS LIST</b></div>
+         <div> <span class="msg-success">@TempData["success"]@ViewData["success"]</span><br /></div>
+        <div> <span class="msg-error">@TempData["fail"]@ViewData["fail"]</span><br /></div>
         <div class="content-main">
             <div id="content-main-dashboard">
                 <div id="product-title-header">
@@ -36,7 +38,7 @@
                     <div id="product-title-2" style="width: 55%;">
                         <form>
                             <input type="text" name="txtSearch" placeholder="Enter product name to search" />
-                            <input type="submit" value="Search"
+                            <input type="submit" value="Search" />
                         </form>
                     </div>
                     <div id="product-title-3" style="width: 20%;">
@@ -58,7 +60,7 @@
                                 <th>UnitsInStock</th>
                                 <th>Category</th>
                                 <th>Discontinued</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -72,6 +74,10 @@
                                     <td>@item.UnitsInStock</td>
                                     <td>@item.Category?.CategoryName</td>
                                     <td>@item.Discontinued</td>
+                                    <td>
+                                        <a href="~/Admin/Product/Update?id=@item.ProductId">Edit</a>
+                                        <a href="~/Admin/Product/Delete?id=@item.ProductId">Delete</a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -94,30 +100,3 @@
         </div>
     </div>
 </div>
-<script>
-    "use strict";
-    var connection = new signalR.HubConnectionBuilder().withUrl("/hubs").build();
-    connection.on("ReloadProduct", (data) => {
-        var tr = '';
-        $.each(data, (k, v) => {
-            tr +=
-                `
-                <tr>
-                    <td>${v.ProductId}</td>
-                    <td>${v.ProductName}</td>
-                    <td>${v.UnitPrice}</td>
-                    <td>${v.QuantityPerUnit}</td>
-                    <td>${v.UnitsInStock}</td>
-                    <td>12</td>
-                    <td>${v.Discontinued}</td>
-                </tr>
-                `
-        })
-        $("#tableBody").html(tr);
-    });
-
-    connection.start().then().catch(function (err) {
-        return console.log(err.toString());
-    });
-
-</script>
