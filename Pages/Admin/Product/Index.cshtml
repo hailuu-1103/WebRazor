@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchString?}"
 @model WebRazor.Pages.Product.IndexModel
 @{
 }
@@ -25,20 +25,16 @@
                     <div id="product-title-1" style="width: 25%;">
                         <b>Filter by Catetory:</b>
                         <form>
-                            <select name="ddlCategory">
-                                <option value="catid1">--- Select ---</option>
-                                <option value="catid1">Smart Phone</option>
-                                <option value="catid2">Computer</option>
-                                <option value="catid3">Television</option>
-                                <option value="catid4">Electronic</option>
+                            <select asp-for="Category" asp-items="Model.Categories">
+                                <option value="">All</option>
                             </select>
-                            <input type="submit" value="Filter">
+                            <a href="~/Admin/Product/Index?Categ    ory=@Model.Category"><button>Filter</button></a>
                         </form>
                     </div>
                     <div id="product-title-2" style="width: 55%;">
                         <form>
-                            <input type="text" name="txtSearch" placeholder="Enter product name to search" />
-                            <input type="submit" value="Search" />
+                            <input asp-for="SearchString" type="text" name="SearchString" placeholder="Enter product name to search" />
+                            <a href="~/Admin/Product/Index?SearchString=@Model.SearchString"><button>Submit</button></a>
                         </form>
                     </div>
                     <div id="product-title-3" style="width: 20%;">

@@ -63,7 +63,18 @@
             data: {
                 labels: xValues,
                 datasets: [{
-                    data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
+                    data: [@Model.ordersInMonth[0].orders.Count, 
+                    @Model.ordersInMonth[1].orders.Count, 
+                    @Model.ordersInMonth[2].orders.Count, 
+                    @Model.ordersInMonth[3].orders.Count, 
+                    @Model.ordersInMonth[4].orders.Count, 
+                    @Model.ordersInMonth[5].orders.Count, 
+                    @Model.ordersInMonth[6].orders.Count,
+                    @Model.ordersInMonth[7].orders.Count, 
+                    @Model.ordersInMonth[8].orders.Count, 
+                    @Model.ordersInMonth[9].orders.Count],
+                    @Model.ordersInMonth[10].orders.Count,
+                    @Model.ordersInMonth[11].orders.Count,
                     borderColor: "sienna",
                     fill: true
                 }]
