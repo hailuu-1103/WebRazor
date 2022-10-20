@@ -30,8 +30,7 @@ namespace WebRazor.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-                optionsBuilder.UseSqlServer(config.GetConnectionString("prn221db"));
+                optionsBuilder.UseSqlServer("server=(local); database=PRN221DB;uid=sa;pwd=123");
             }
         }
 
@@ -99,6 +98,8 @@ namespace WebRazor.Models
                 entity.Property(e => e.ContactName).HasMaxLength(30);
 
                 entity.Property(e => e.ContactTitle).HasMaxLength(30);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Department>(entity =>
@@ -241,6 +242,8 @@ namespace WebRazor.Models
                 entity.HasIndex(e => e.ProductName, "ProductName");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.AddedTime).HasColumnType("datetime");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace WebRazor.Models
 {
@@ -13,18 +12,11 @@ namespace WebRazor.Models
         }
 
         public string CustomerId { get; set; } = null!;
-
-        [Required(ErrorMessage = "CompanyName is required")]
         public string CompanyName { get; set; } = null!;
-
-        [Required(ErrorMessage = "ContactName is required")]
         public string? ContactName { get; set; }
-
-        [Required(ErrorMessage = "ContactTitle is required")]
         public string? ContactTitle { get; set; }
-
-        [Required(ErrorMessage = "Address is required")]
         public string? Address { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

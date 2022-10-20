@@ -9,7 +9,7 @@
             <li>Dashboard</li></a>
             <a href="order.html">
             <li>Orders</li></a>
-            <a href="~/Admin/Product/Index">
+            <a href="~/Admin/Product/1">
             <li>Products</li></a>
             <a href="#">
             <li>Customers</li></a>
@@ -63,20 +63,20 @@
             data: {
                 labels: xValues,
                 datasets: [{
-                    data: [@Model.ordersInMonth[0].orders.Count, 
-                    @Model.ordersInMonth[1].orders.Count, 
-                    @Model.ordersInMonth[2].orders.Count, 
-                    @Model.ordersInMonth[3].orders.Count, 
-                    @Model.ordersInMonth[4].orders.Count, 
-                    @Model.ordersInMonth[5].orders.Count, 
-                    @Model.ordersInMonth[6].orders.Count,
-                    @Model.ordersInMonth[7].orders.Count, 
-                    @Model.ordersInMonth[8].orders.Count, 
-                    @Model.ordersInMonth[9].orders.Count],
-                    @Model.ordersInMonth[10].orders.Count,
-                    @Model.ordersInMonth[11].orders.Count,
-                    borderColor: "sienna",
-                    fill: true
+                    data: [@Model.ordersInMonth[0].orders.Count, @Model.ordersInMonth[1].orders.Count, @Model.ordersInMonth[2].orders.Count, @Model.ordersInMonth[3].orders.Count, @Model.ordersInMonth[4].orders.Count, @Model.ordersInMonth[5].orders.Count, @Model.ordersInMonth[6].orders.Count, @Model.ordersInMonth[7].orders.Count, @Model.ordersInMonth[8].orders.Count, @Model.ordersInMonth[9].orders.Count, @Model.ordersInMonth[10].orders.Count, @Model.ordersInMonth[11].orders.Count],
+                    backgroundColor: [
+                        'rgb(75, 192, 192)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    fill: true,
                 }]
             },
             options: {
@@ -87,7 +87,7 @@
 
     function CustomersChart() {
         var xValues = ["Total", "New customer"];
-        var yValues = [200, 50, 300];
+        var yValues = [@Model.totalCustomers, @Model.newCustomerInMonth];
         var barColors = ["green", "red"];
 
         new Chart("myChart2", {
@@ -111,4 +111,5 @@
 
     OrdersChart();
     CustomersChart();
+</script>
 </script>

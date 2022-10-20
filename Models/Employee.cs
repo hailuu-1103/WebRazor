@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace WebRazor.Models
 {
@@ -13,14 +12,8 @@ namespace WebRazor.Models
         }
 
         public int EmployeeId { get; set; }
-
-        [Required(ErrorMessage = "Address is required")]
         public string LastName { get; set; } = null!;
-
-        [Required(ErrorMessage = "Address is required")]
         public string FirstName { get; set; } = null!;
-
-        [Required(ErrorMessage = "Address is required")]
         public int? DepartmentId { get; set; }
         public string? Title { get; set; }
         public string? TitleOfCourtesy { get; set; }

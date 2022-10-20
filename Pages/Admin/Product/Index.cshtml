@@ -1,4 +1,4 @@
-﻿@page "{searchString?}"
+﻿@page "{id:int?}"
 @model WebRazor.Pages.Product.IndexModel
 @{
 }
@@ -28,7 +28,7 @@
                             <select asp-for="Category" asp-items="Model.Categories">
                                 <option value="">All</option>
                             </select>
-                            <a href="~/Admin/Product/Index?Categ    ory=@Model.Category"><button>Filter</button></a>
+                            <a href="~/Admin/Product/Index?Category=@Model.Category"><button>Filter</button></a>
                         </form>
                     </div>
                     <div id="product-title-2" style="width: 55%;">
@@ -82,14 +82,18 @@
                 </div>
                 <div id="paging">
                     <div class="pagination">
-                        <a href="#">&laquo;</a>
-                        <a href="#">1</a>
-                        <a href="#" class="active">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        <a href="#">6</a>
-                        <a href="#">&raquo;</a>
+                        @if (Model.IsShowPrevious)
+                        {
+                            <a href="~/admin/product/@(@Model.CurrentPage-1)">&laquo;</a>
+                        }
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <a href="~/admin/product/@i">@i</a>
+                        }
+                        @if (Model.IsShowNext)
+                        {
+                            <a href="~/admin/product/@(@Model.CurrentPage+1)">&raquo;</a>
+                        }
                     </div>
                 </div>
             </div>
