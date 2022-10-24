@@ -68,7 +68,7 @@ namespace WebRazor.Pages.Product
                     {
                         productInExcel.Add(new Models.Product
                         {
-                            ProductId = Convert.ToInt32(workSheet.Cells[row, 1].Value,
+                            ProductId = Convert.ToInt32(workSheet.Cells[row, 1].Value),
                             ProductName = workSheet.Cells[row, 2].Value.ToString().Trim(),
                             UnitPrice = (decimal?)workSheet.Cells[row, 3].Value,
                             QuantityPerUnit = workSheet.Cells[row, 4].Value.ToString().Trim(),

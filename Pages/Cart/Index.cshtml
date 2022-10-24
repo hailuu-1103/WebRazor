@@ -44,14 +44,27 @@
             <div id="customer-info-content">
                 <h3>CUSTOMER INFORMATION:</h3>
                 <div id="customer-info-detail">
-                    <div id="customer-info-left">
-                        <input type="text" placeholder="Company name *" /><br />
-                        <input type="text" placeholder="Contact name *" /><br />
-                    </div>
-                    <div id="customer-info-right">
-                        <input type="text" placeholder="Contact title *" /><br />
-                        <input type="text" placeholder="Address *" /><br />
-                    </div>
+                    @if(Model.Customer != null){
+                        <div id="customer-info-left">
+
+                            <input type="text" placeholder="@Model.Customer.CompanyName" readonly/><br />
+                            <input type="text" placeholder="@Model.Customer.ContactName" readonly/><br />
+                        </div>
+                        <div id="customer-info-right">
+                            <input type="text" placeholder="@Model.Customer.ContactTitle" readonly/><br />
+                            <input type="text" placeholder="@Model.Customer.Address" readonly/><br />
+                        </div>
+                    } else {
+                        <div id="customer-info-left">
+
+                            <input type="text" placeholder="Company name *" /><br />
+                            <input type="text" placeholder="Contact name *" /><br />
+                        </div>
+                        <div id="customer-info-right">
+                            <input type="text" placeholder="Contact title *" /><br />
+                            <input type="text" placeholder="Address *" /><br />
+                        </div>
+                    }
                 </div>
             </div>
         </div>

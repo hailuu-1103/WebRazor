@@ -13,6 +13,7 @@ namespace WebRazor.Pages.Cart
         public Dictionary<Models.Product, int> Cart { get; set; } = new Dictionary<Models.Product, int>();
 
         public Models.Account Auth { get; set; }
+        public Models.Customer Customer { get; set; }
 
         public decimal Sum { get; set; } = 0;
 
@@ -26,7 +27,8 @@ namespace WebRazor.Pages.Cart
         public async Task<IActionResult> OnGet()
         {
             var cart = HttpContext.Session.GetString("cart");
-
+            Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
+            Customer = dbContext.Customers.FirstOrDefault(cus => cus.CustomerId == Auth.CustomerId);
             Dictionary<int, int> list;
             if (cart != null)
             {
@@ -66,8 +68,6 @@ namespace WebRazor.Pages.Cart
             {
                 return Redirect("/Account/Login");
             }
-
-            Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
 
             if (Auth == null)
             {
