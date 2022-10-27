@@ -57,12 +57,12 @@
                     } else {
                         <div id="customer-info-left">
 
-                            <input type="text" placeholder="Company name *" /><br />
-                            <input type="text" placeholder="Contact name *" /><br />
+                            <input asp-for="@Model.Anym.CompanyName" type="text" placeholder="Company name *" /><br />
+                            <input asp-for="@Model.Anym.ContactName" type="text" placeholder="Contact name *" /><br />
                         </div>
                         <div id="customer-info-right">
-                            <input type="text" placeholder="Contact title *" /><br />
-                            <input type="text" placeholder="Address *" /><br />
+                            <input asp-for="@Model.Anym.ContactTitle" type="text" placeholder="Contact title *" /><br />
+                            <input asp-for="@Model.Anym.Address" type="text" placeholder="Address *" /><br />
                         </div>
                     }
                 </div>

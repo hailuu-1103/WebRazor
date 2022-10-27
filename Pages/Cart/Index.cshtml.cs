@@ -15,6 +15,8 @@ namespace WebRazor.Pages.Cart
         public Models.Account Auth { get; set; }
         public Models.Customer Customer { get; set; }
 
+        public Anonymous Anym { get; set; }
+
         public decimal Sum { get; set; } = 0;
 
         private readonly PRN221DBContext dbContext;
@@ -27,8 +29,11 @@ namespace WebRazor.Pages.Cart
         public async Task<IActionResult> OnGet()
         {
             var cart = HttpContext.Session.GetString("cart");
-            Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
-            Customer = dbContext.Customers.FirstOrDefault(cus => cus.CustomerId == Auth.CustomerId);
+            if (HttpContext.Session.GetString("Account") != null)
+            {
+                Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
+                Customer = dbContext.Customers.FirstOrDefault(cus => cus.CustomerId == Auth.CustomerId);
+            }
             Dictionary<int, int> list;
             if (cart != null)
             {
@@ -53,7 +58,10 @@ namespace WebRazor.Pages.Cart
         public async Task<IActionResult> OnPost()
         {
             var cart = HttpContext.Session.GetString("cart");
-
+            if (HttpContext.Session.GetString("Account") != null)
+            {
+                Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
+            }
             Dictionary<int, int> list;
             if (cart != null)
             {
@@ -63,23 +71,24 @@ namespace WebRazor.Pages.Cart
             {
                 list = new Dictionary<int, int>();
             }
-
-            if (HttpContext.Session.GetString("Account") == null)
-            {
-                return Redirect("/Account/Login");
-            }
-
-            if (Auth == null)
-            {
-                return Redirect("/Account/Login");
-            }
-
             try
             {
                 Models.Order order = new Models.Order();
-                order.CustomerId = Auth.CustomerId;
+                order.CustomerId = Auth == null ? null : Auth.CustomerId;
                 order.OrderDate = DateTime.Now;
-
+                order.RequiredDate = DateTime.Today.AddDays(3);
+                if(Anym != null)
+                {
+                    order.ShipName = Anym.ContactName;
+                    order.ShipAddress = Anym.Address;
+                    order.ShipCity = Anym.ContactName;
+                }
+                else
+                {
+                    order.ShipName = Customer.ContactName;
+                    order.ShipAddress = Customer.Address;
+                    order.ShipCity = Customer.ContactName;
+                }
                 await dbContext.Orders.AddAsync(order);
                 await dbContext.SaveChangesAsync();
                 order = await dbContext.Orders.OrderBy(o => o.OrderDate).LastOrDefaultAsync();
@@ -109,6 +118,14 @@ namespace WebRazor.Pages.Cart
             }
 
             return Page();
+        }
+
+        public class Anonymous
+        {
+            public string CompanyName { get; set; } = null!;
+            public string? ContactName { get; set; }
+            public string? ContactTitle { get; set; }
+            public string? Address { get; set; }
         }
     }
 }

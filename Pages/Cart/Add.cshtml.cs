@@ -28,7 +28,7 @@ namespace WebRazor.Pages.Cart
                 return NotFound();
             }
 
-            if (HttpContext.Session.GetString("Account") == null)
+            /*if (HttpContext.Session.GetString("Account") == null)
             {
                 return Redirect("/Account/Login");
             }
@@ -38,7 +38,7 @@ namespace WebRazor.Pages.Cart
             if (Auth == null)
             {
                 return Redirect("/Account/Login");
-            }
+            }*/
 
             Models.Product product = (await dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id));
 
