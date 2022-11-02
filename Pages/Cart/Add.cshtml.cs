@@ -21,6 +21,7 @@ namespace WebRazor.Pages.Cart
         [BindProperty]
         public Models.Account Auth { get; set; }
 
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -77,8 +78,11 @@ namespace WebRazor.Pages.Cart
                             list[kvp.Key] = currentValue;
                         }
                     }
+                    var itemCount = list.Count;
 
                     HttpContext.Session.SetString("cart", JsonSerializer.Serialize(list));
+                    HttpContext.Session.SetString("itemCount", JsonSerializer.Serialize(itemCount));
+                    
                     TempData["success"] = "Add to cart successfull";
                 }
                 catch (Exception e)

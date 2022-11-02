@@ -24,7 +24,7 @@ namespace WebRazor.Pages.Order
 
             Auth = await dbContext.Accounts.FirstOrDefaultAsync(c => c.AccountId == acc.AccountId);
             var cus = await dbContext.Customers.ToListAsync();
-            var ord = await dbContext.Orders.ToListAsync();
+            var ord = await dbContext.Orders.OrderByDescending(ord => ord.OrderDate).ToListAsync();
             var ordDe = await dbContext.OrderDetails.ToListAsync();
             var pro = await dbContext.Products.ToListAsync();
 

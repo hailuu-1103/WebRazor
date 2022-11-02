@@ -29,9 +29,22 @@
                             <div>Order creation date: @order.OrderDate</div>
                             <div>Order: <a href="#">#@order.OrderId</a></div>
                         </div>
-                        <div class="profile-order-title-right">
-                            <span>Pending</span>
-                        </div>
+                        @if (order.RequiredDate == null)
+                        {
+                            <div class="profile-order-title-right">
+                                <span style="color:grey">Canceled Order</span>
+                            </div>
+                        }
+                        else if (order.ShippedDate != null){
+                            <div class="profile-order-title-right">
+                                <span style="color:green">Complete</span>
+                            </div>
+                        }
+                        else {
+                            <div class="profile-order-title-right">
+                                <span style="color:red">Pending</span>
+                            </div>
+                        }
                     </div>
 
                     @foreach (var item in order.OrderDetails)

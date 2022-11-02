@@ -61,6 +61,7 @@ namespace WebRazor.Pages.Cart
             if (HttpContext.Session.GetString("Account") != null)
             {
                 Auth = JsonSerializer.Deserialize<Models.Account>(HttpContext.Session.GetString("Account"));
+                Customer = dbContext.Customers.FirstOrDefault(cus => cus.CustomerId == Auth.CustomerId);
             }
             Dictionary<int, int> list;
             if (cart != null)
@@ -76,7 +77,7 @@ namespace WebRazor.Pages.Cart
                 Models.Order order = new Models.Order();
                 order.CustomerId = Auth == null ? null : Auth.CustomerId;
                 order.OrderDate = DateTime.Now;
-                order.RequiredDate = DateTime.Today.AddDays(3);
+                order.RequiredDate = DateTime.Today.AddDays(7);
                 if(Anym != null)
                 {
                     order.ShipName = Anym.ContactName;
@@ -111,6 +112,7 @@ namespace WebRazor.Pages.Cart
                 ViewData["success"] = "Order successfull";
 
                 HttpContext.Session.Remove("cart");
+                HttpContext.Session.Remove("itemCount");
             }
             catch (Exception e)
             {

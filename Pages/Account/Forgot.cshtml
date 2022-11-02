@@ -10,7 +10,7 @@
     <div id="form-content">
         <form action="" method="post">
             <label>Enter your registered email address<span style="color: red;">*</span></label><br />
-            <input type="text" /><br />
+            <input asp-for="@Model.To" type="text" /><br />
             <input type="submit" value="GET PASSWORD" style="margin-bottom: 30px;" /><br />
         </form>
     </div>
