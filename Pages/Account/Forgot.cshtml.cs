@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System.Net.Mail;
 using System.Text;
+using System.Text.Encodings.Web;
 using WebAppIdentity;
 using WebRazor.Models;
 
@@ -10,21 +13,28 @@ namespace WebRazor.Pages.Account
     public class ForgotModel : PageModel
     {
         private PRN221DBContext dbContext;
+        private readonly IConfiguration _config;
+        private readonly ISendGridClient _sendGridClient;
+        private readonly HtmlEncoder _htmlEncoder;
 
-        public ForgotModel(PRN221DBContext dbContext)
+        public ForgotModel(PRN221DBContext dbContext, IConfiguration configuration,
+        ISendGridClient sendGridClient,
+        HtmlEncoder htmlEncoder)
         {
             this.dbContext = dbContext;
+            this._config = configuration;
+            this._sendGridClient = sendGridClient;
+            this._htmlEncoder = htmlEncoder;
         }
         [BindProperty]
         public string To { get; set; } //To address    
         
-        private string from = "hoanghai.luu.71@gmail.com"; //From address    
         private MailMessage message;
         public void OnGet()
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             var account = dbContext.Accounts.FirstOrDefault(acc => acc.Email.Equals(To));
             if(account != null)
@@ -34,7 +44,6 @@ namespace WebRazor.Pages.Account
                 dbContext.Update(account);
                 dbContext.SaveChanges();
                 SendGridEmailSender sendGrid = new SendGridEmailSender();
-                message = new MailMessage(from, To);
                 string mailbody = "<!DOCTYPE html>\n"
                     + "<html>\n"
                     + "    <body>\n"
@@ -54,24 +63,25 @@ namespace WebRazor.Pages.Account
                     + "        </div>\n"
                     + "    </body>\n"
                     + "</html>";
-                message.Subject = "Forgot password";
-                message.Body = mailbody;
-                message.BodyEncoding = Encoding.UTF8;
-                message.IsBodyHtml = true;
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
-                System.Net.NetworkCredential basicCredential1 = new
-                System.Net.NetworkCredential("hoanghai.luu.71@gmail.com", "pxnjybofplllsica");
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = basicCredential1;
+                var message = new SendGridMessage
+                {
+                    From = new EmailAddress(
+                    email: _config["SendGridSenderEmail"],
+                    name: _config["SendGridSenderName"]
+                ),
+                    Subject = "Confirm Newsletter Signup",
+                    HtmlContent = mailbody
+                    };
+
+                message.AddTo(new EmailAddress(To, "HaiLuu"));
                 try
                 {
-                    client.Send(message);
+                    var response = await _sendGridClient.SendEmailAsync(message);
+                    
                 }
-
                 catch (Exception ex)
                 {
-                    throw;
+                    ViewData["error"] = ex.Message;
                 }
             }
             
