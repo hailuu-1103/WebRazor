@@ -4,9 +4,9 @@ namespace WebRazor.Hubs
 {
     public class HubServer : Hub
     {
-        /*public async Task SendMessage(string user, string message)
+        public void HasNewData()
         {
-            await Clients.All.SendAsync("ReloadProduct", user, message, DateTime.Now.ToShortTimeString);
-        }*/
+            Clients.All.SendAsync("Reload");
+        }
     }
 }

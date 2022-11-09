@@ -1,22 +1,13 @@
 ﻿"use strict";
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/hubs").build();
-connection.on("ReloadProduct", (data) => {
-    var tr = '';
-    $.each(data, (k, v) => {
-        tr +=
-            `
-            <tr>
-                <td>${v.ProductId}</td>
-                <td>${v.ProductName}</td>
-                <td>${v.UnitPrice}</td>
-                <td>${v.QuantityPerUnit}</td>
-                <td>${v.UnitsInStock}</td>
-                <td>${v.Category?.CategoryName}</td>
-                <td>${v.Discontinued}</td>
-            </tr>
-            `
-    })
-    $("#tableBody").html(tr);
+
+connection.on("Reload", function () {
+    var url = window.location.href;
+
+    if (url.endsWith("Admin/Product")) {
+        location.reload();
+    }
 });
 
 connection.start().then().catch(function (err) {

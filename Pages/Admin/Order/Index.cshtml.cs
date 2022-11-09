@@ -12,13 +12,19 @@ namespace WebRazor.Pages.Admin.Order
     public class IndexModel : PageModel
     {
         private readonly PRN221DBContext dbContext;
-        [FromQuery(Name = "page")] public int Page { get; set; } = 1;
         [BindProperty] public List<Models.Order> Orders { get; set; }
         public List<String> PagesLink { get; set; } = new List<string>();
 
         [FromQuery(Name = "txtStartOrderDate")] public DateTime StartDate { get; set; }
         [FromQuery(Name = "txtEndOrderDate")] public DateTime EndDate { get; set; }
-        private int perPage = 10;
+
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+        public int Count;
+        public int PageSize { get; set; } = 12;
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public bool IsShowPrevious => this.CurrentPage > 1;
+        public bool IsShowNext => this.CurrentPage < this.TotalPages;
 
         public IndexModel(PRN221DBContext dbContext)
         {
@@ -39,9 +45,9 @@ namespace WebRazor.Pages.Admin.Order
             return null;
         }
 
-        public async Task LoadData()
+        public async Task LoadData(bool paging = true)
         {
-            var query = dbContext.Orders
+            var queryRaw = dbContext.Orders
                 .Where(q => true);
 
             SqlDateTime? sqlStartDate = validateDateTime(StartDate);
@@ -50,34 +56,54 @@ namespace WebRazor.Pages.Admin.Order
 
             if (sqlStartDate != null)
             {
-                query = query.Where(q => (DateTime)q.OrderDate >= StartDate);
+                queryRaw = queryRaw.Where(q => (DateTime)q.OrderDate >= StartDate);
             }
 
             if (sqlEndDate != null)
             {
-                query = query.Where(q => (DateTime)q.OrderDate <= EndDate);
+                queryRaw = queryRaw.Where(q => (DateTime)q.OrderDate <= EndDate);
             }
 
-            Orders = await query
-                .Include(q => q.Customer).Include(q => q.Employee)
-                .OrderByDescending(o => o.OrderDate)
-                .Skip((Page - 1) * perPage).Take(perPage)
-                .ToListAsync();
+            var query = queryRaw;
+            query = query.Include(q => q.Customer).Include(q => q.Employee)
+                .OrderByDescending(o => o.OrderDate);
+
+            if (paging)
+                query = query.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+
+            Orders = await query.ToListAsync();
 
             ViewData["StartDate"] = sqlStartDate != null ? StartDate.Date.ToString("yyyy-MM-dd") : "";
             ViewData["EndDate"] = sqlEndDate != null ? EndDate.Date.ToString("yyyy-MM-dd") : "";
 
-            /*PageLink page = new PageLink(perPage);*/
-            String param = (!(ViewData["StartDate"].Equals("") && ViewData["EndDate"].Equals("")) 
-                ? "txtStartOrderDate=" + ViewData["StartDate"] 
-                + "&txtEndOrderDate=" + ViewData["EndDate"] : "") + "&";
-            /*PagesLink = page.getLink(Page, await query.CountAsync(), "/Admin/Order/Index?" + param);*/
+
         }
 
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            await LoadData();
+            if (id != null)
+            {
+                CurrentPage = (int)id;
+                SqlDateTime? sqlStartDate = validateDateTime(StartDate);
+                SqlDateTime? sqlEndDate = validateDateTime(EndDate);
+                if (sqlStartDate != null)
+                {
+                    Orders = dbContext.Orders.Where(o => (DateTime)o.OrderDate >= StartDate).ToList();
+                } else if(sqlEndDate != null)
+                {
+                    Orders = dbContext.Orders.Where(o => (DateTime)o.OrderDate <= EndDate).ToList();
+                } else
+                {
+                    Orders = dbContext.Orders.Include(p => p.Customer).Include(p => p.Employee).ToList();
+                }
+                Count = Orders.Count;
+                Orders = GetPaginatedResult(CurrentPage, PageSize);
+            }
+            else
+            {
+                Orders = dbContext.Orders.Include(p => p.Customer).Include(p => p.Employee).ToList();
+            }
 
             return Page();
         }
@@ -95,6 +121,11 @@ namespace WebRazor.Pages.Admin.Order
             order.RequiredDate = null;
             await dbContext.SaveChangesAsync();
             return Redirect(target);
+        }
+
+        public List<Models.Order> GetPaginatedResult(int currentPage, int pageSize)
+        {
+            return Orders.OrderBy(d => d.OrderId).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
         }
     }
 }

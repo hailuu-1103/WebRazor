@@ -35,7 +35,7 @@
                             <div> <span class="msg-error">@TempData["fail"]</span><br /></div>
                             <div id="product-detail-buttons">
                                 <div id="product-detail-button">
-                                    <a href="/Order/Add/@Model.Product.ProductId">
+                                    <a asp-page="/Order/Index" asp-page-handler="Add" asp-route-id="@Model.Product.ProductId">
                                         <input type="button" value="BUY NOW">
                                     </a>
                                     <a href="/Cart/Add/@Model.Product.ProductId">

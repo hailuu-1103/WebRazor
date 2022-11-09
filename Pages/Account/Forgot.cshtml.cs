@@ -73,19 +73,21 @@ namespace WebRazor.Pages.Account
                     HtmlContent = mailbody
                     };
 
-                message.AddTo(new EmailAddress(To, "HaiLuu"));
-                try
+                message.AddTo(new EmailAddress(To));
+                var response = await _sendGridClient.SendEmailAsync(message);
+                if (!response.IsSuccessStatusCode)
                 {
-                    var response = await _sendGridClient.SendEmailAsync(message);
-                    
-                }
-                catch (Exception ex)
+                    ViewData["error"] = response.StatusCode;
+                    return Redirect("/Account/Forgot");
+                } else
                 {
-                    ViewData["error"] = ex.Message;
+                    return Redirect("/Account/Login");
                 }
+            } else
+            {
+                return Redirect("/Account/Login");
             }
-            
-            return Redirect("/Account/Login");
+
         }
         private static string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

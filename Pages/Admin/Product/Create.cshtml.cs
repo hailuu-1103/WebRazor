@@ -34,7 +34,7 @@ namespace WebRazor.Pages.Product
             dBContext.Products.Add(Product);
             await dBContext.SaveChangesAsync();
             await hubContext.Clients.All.SendAsync("ReloadProduct", await dBContext.Products.ToListAsync());
-            return RedirectToPage("./Index");
+            return Redirect("~/Admin/Product/1");
         }
     }
 }

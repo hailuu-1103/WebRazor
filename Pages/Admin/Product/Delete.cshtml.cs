@@ -38,9 +38,8 @@ namespace WebRazor.Pages.Product
             catch (Exception e)
             {
                 TempData["fail"] = e.Message;
-
             }
-            return Redirect("~/Admin/Product/Index");
+            return Redirect("~/Admin/Product/1");
         }
     }
 }
